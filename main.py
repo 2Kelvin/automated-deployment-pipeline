@@ -7,6 +7,10 @@ app = FastAPI()
 # Create tables on startup
 models.Base.metadata.create_all(bind=database.engine)
 
+# @app.get("/")
+# def home():
+#     return {"message": "Welcome to the FastAPI Items API"}
+
 @app.post("/items/", response_model=database.ItemResponse)
 def create_item(item: database.ItemCreate, db: Session = Depends(database.get_db)):
     db_item = models.Item(**item.dict())

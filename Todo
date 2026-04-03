@@ -4,7 +4,7 @@ Docker:
 
     [Multicontainer Microservices: api & database]
     - Setup api in Dockerfile
-        --> install all dependencies: pip install fastapi uvicorn sqlalchemy psycopg2-binary
+        ✅--> install all dependencies: pip install fastapi uvicorn sqlalchemy psycopg2-binary
         --> multi-stage Dockerfile to optimize image sizes
 
     - Setup api and postgres containers in compose.yaml

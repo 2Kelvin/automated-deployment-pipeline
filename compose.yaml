@@ -1,0 +1,16 @@
+name: FlaskAPI and Postgres Database Microservices
+services:
+  # database
+  postgres:
+    image: postgres:18.3
+    environment:
+      POSTGRES_USER: kev
+      POSTGRES_DB: all_items
+      POSTGRES_PASSWORD: 1234 # how can i use the password in GitHub secrets here
+
+  # api
+  python_api:
+    depends_on: # wait for postgres to start first
+      - postgres
+    build: ./ # use the Dockerfile in this folder
+      
