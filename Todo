@@ -2,12 +2,12 @@ Simple CRUD Python FastAPI code integrating with Postgres
 
 Docker:
 
-    [Multicontainer Microservices: api & database]
+✅    [Multicontainer Microservices: api & database]
     - Setup api in Dockerfile
-        ✅--> install all dependencies: pip install fastapi uvicorn sqlalchemy psycopg2-binary
+        --> install all dependencies: pip install fastapi uvicorn sqlalchemy psycopg2-binary
         --> multi-stage Dockerfile to optimize image sizes
 
-    - Setup api and postgres containers in compose.yaml
+✅    - Setup api and postgres containers in compose.yaml
         - add api env variables
         - add postgres env variables: (user, password & db_name): same values used in api
         - add passwords in github secrets *
@@ -37,3 +37,7 @@ Github Actions:
 
     [Automated Deployment]
     SSH into VM using GitHub Actions and deploy image built
+
+*** Refactor:
+- safe password use (api, postgres, github)
+- multi-stage Dockerfile: optimize image sizes

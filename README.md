@@ -1,3 +1,9 @@
 # automated-deployment-pipeline
 
 A Python FastAPI web service that automatically tests, builds and deploys to a local VM using GitHub Actions and Docker
+
+
+How to use the API, navigate to this link when you run the multicontainer app:
+```bash
+http://localhost:8000/docs
+```

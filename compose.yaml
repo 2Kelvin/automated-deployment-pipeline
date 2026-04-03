@@ -1,16 +1,29 @@
-name: FlaskAPI and Postgres Database Microservices
 services:
   # database
   postgres:
     image: postgres:18.3
+    expose:
+      - 5432
+    volumes:
+      - my_items:/var/lib/postgresql
     environment:
       POSTGRES_USER: kev
       POSTGRES_DB: all_items
       POSTGRES_PASSWORD: 1234 # how can i use the password in GitHub secrets here
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kev -d all_items"] # check if postgres is ready
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # api
   python_api:
     depends_on: # wait for postgres to start first
-      - postgres
+      postgres:
+        condition: service_healthy
     build: ./ # use the Dockerfile in this folder
-      
+    ports:
+      - "8000:8000"
+
+volumes:
+  my_items:

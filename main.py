@@ -1,33 +1,39 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-import models, database
+import models, database, schemas
 
 app = FastAPI()
 
 # Create tables on startup
 models.Base.metadata.create_all(bind=database.engine)
 
-# @app.get("/")
-# def home():
-#     return {"message": "Welcome to the FastAPI Items API"}
+@app.get("/")
+def home():
+    return {"message": "Welcome to Items"}
 
-@app.post("/items/", response_model=database.ItemResponse)
-def create_item(item: database.ItemCreate, db: Session = Depends(database.get_db)):
-    db_item = models.Item(**item.dict())
+@app.get("/items/", response_model=list[schemas.ItemResponse])
+def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
+    items = db.query(models.Item).offset(skip).limit(limit).all()
+    return items
+
+@app.post("/items/", response_model=schemas.ItemResponse)
+def create_item(item: schemas.ItemCreate, db: Session = Depends(database.get_db)):
+    # Use item.model_dump() for Pydantic v2 (or item.dict() for v1)
+    db_item = models.Item(**item.model_dump())
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
     return db_item
 
-@app.get("/items/{item_id}", response_model=database.ItemResponse)
+@app.get("/items/{item_id}", response_model=schemas.ItemResponse)
 def read_item(item_id: int, db: Session = Depends(database.get_db)):
     db_item = db.query(models.Item).filter(models.Item.id == item_id).first()
     if db_item is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return db_item
 
-@app.put("/items/{item_id}", response_model=database.ItemResponse)
-def update_item(item_id: int, item: database.ItemCreate, db: Session = Depends(database.get_db)):
+@app.put("/items/{item_id}", response_model=schemas.ItemResponse)
+def update_item(item_id: int, item: schemas.ItemCreate, db: Session = Depends(database.get_db)):
     db_item = db.query(models.Item).filter(models.Item.id == item_id).first()
     if not db_item:
         raise HTTPException(status_code=404, detail="Item not found")
