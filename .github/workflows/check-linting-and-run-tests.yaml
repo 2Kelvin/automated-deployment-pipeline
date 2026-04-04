@@ -7,10 +7,16 @@ jobs:
       - name: Download repo to runner
         uses: actions/checkout@v6.0.2
 
+      - name: Install Python 3.14.3
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version: '3.14.3'
+
+
       - name: Runner Python version
         run: |
-          whereis python3
           python3 --version
           pip --version
-        # - name: Run linter
+
+      # - name: Run linter
       #   uses: 
