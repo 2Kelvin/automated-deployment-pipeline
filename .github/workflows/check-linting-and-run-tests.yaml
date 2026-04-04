@@ -19,3 +19,22 @@ jobs:
 
       - name: Run ruff-action Python linter
         uses: astral-sh/ruff-action@v3.6.1
+
+  unit_tests:
+    needs: check_linting # if linting checks don't pass, dont run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download repo to runner
+        uses: actions/checkout@v6.0.2
+
+      - name: Install Python 3.14.3
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version: "3.14.3"
+
+      - name: Install project dependencies
+        run: pip install fastapi uvicorn sqlalchemy psycopg2-binary pytest httpx
+
+      - name: Run unit tests
+        run: pytest
+        

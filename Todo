@@ -18,8 +18,9 @@ Github Actions:
     
     [Trigger] on push & pull request:
 
-      - (Job 1)
-      Linting check: action tool --> flake8
+✅      - (Job 1)
+      Linting check: action tool --> ruff-action
+        --> if linting fails don't tun tests
 
       - (Job 2) 
       [Unit Tests]
