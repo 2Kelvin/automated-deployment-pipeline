@@ -1,0 +1,15 @@
+name: Code linting and Unit tests
+on: [push, pull_request]
+jobs:
+  check_linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download repo to runner
+        uses: actions/checkout@v6.0.2
+
+      - name: Runner Python version
+        run: |
+          python3 --version,
+          pip --version
+        # - name: Run linter
+      #   uses: 

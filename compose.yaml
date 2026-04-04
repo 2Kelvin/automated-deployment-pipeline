@@ -10,17 +10,17 @@ services:
       POSTGRES_USER: kev
       POSTGRES_DB: all_items
       POSTGRES_PASSWORD: 1234 # how can i use the password in GitHub secrets here
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kev -d all_items"] # check if postgres is ready
+    healthcheck: # check if postgres is ready
+      test: ["CMD-SHELL", "pg_isready -U kev -d all_items"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   # api
   python_api:
-    depends_on: # wait for postgres to start first
+    depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_healthy # wait for postgres to start first
     build: ./ # use the Dockerfile in this folder
     ports:
       - "8000:8000"
