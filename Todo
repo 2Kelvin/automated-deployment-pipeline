@@ -28,9 +28,9 @@ Github Actions:
       run tests 
         -> if tests successful (above 80%) -->  merge code to main (setup manual approval button)
             --> docker image build
+                ----> use Git SHA method to tag image
             --> scan docker images ---> tool: Trivy or Snyk
             --> push image to docker hub
-                ----> use Git SHA method to tag image
 
         -> on tests failure (below 80%) --> no code merge; fail workflow
 

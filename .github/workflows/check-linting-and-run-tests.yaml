@@ -37,4 +37,19 @@ jobs:
 
       - name: Run unit tests
         run: pytest
-        
+
+      - name: Build Docker image # docker is already preinstalled in runner
+        run: docker build -t rocketman02/python-fastapi-postgres:${{ github.sha }} .
+
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+           | sudo sh -s -- -b /usr/local/bin v0.69.3
+           
+          trivy --version
+
+      - name: Trivy Docker image scan
+        run: trivy image rocketman02/python-fastapi-postgres:${{ github.sha }}
+
+      - name: Push Docker image to Docker Hub
+        run: docker push rocketman02/python-fastapi-postgres:${{ github.sha }}
