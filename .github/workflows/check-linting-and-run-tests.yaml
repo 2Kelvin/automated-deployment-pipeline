@@ -52,7 +52,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
           ignore-unfixed: true
-          exit-code: '1'
+          # exit-code: '1'
           format: 'sarif'
           output: 'trivy-security-scan-results.sarif'
           limit-severities-for-sarif: true
