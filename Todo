@@ -1,4 +1,5 @@
 Simple CRUD Python FastAPI code integrating with Postgres
+(Lint → Test → Build → Push → Deploy)
 
 Docker:
 

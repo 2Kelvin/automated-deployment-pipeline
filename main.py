@@ -1,13 +1,17 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+from contextlib import asynccontextmanager
 import models
 import database
 import schemas
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # This only runs when the ACTUAL server starts: create tables on startup
+    models.Base.metadata.create_all(bind=database.engine)
+    yield
 
-# Create tables on startup
-models.Base.metadata.create_all(bind=database.engine)
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def home():
