@@ -10,13 +10,12 @@ jobs:
       - name: Install Python 3.14.3
         uses: actions/setup-python@v6.2.0
         with:
-          python-version: '3.14.3'
+          python-version: "3.14.3"
 
-
-      - name: Runner Python version
+      - name: Check runner's Python version
         run: |
           python3 --version
           pip --version
 
-      # - name: Run linter
-      #   uses: 
+      - name: Run ruff-action Python linter
+        uses: astral-sh/ruff-action@v3.6.1

@@ -20,7 +20,7 @@ services:
   python_api:
     depends_on:
       postgres:
-        condition: service_healthy # wait for postgres to start first
+        condition: service_healthy
     build: ./ # use the Dockerfile in this folder
     ports:
       - "8000:8000"
