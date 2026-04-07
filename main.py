@@ -7,7 +7,6 @@ import schemas
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # This only runs when the ACTUAL server starts: create tables on startup
     models.Base.metadata.create_all(bind=database.engine)
     yield
 
@@ -15,7 +14,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def home():
-    return {"message": "Welcome to Items"}
+    return {"message": "Welcome to my stock items"}
 
 @app.get("/items/", response_model=list[schemas.ItemResponse])
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
