@@ -43,7 +43,7 @@ Github Actions:
 *** Refactor:
 - safe password use (api, postgres, github)
 - multi-stage Dockerfile: optimize image sizes
-- use built in actions; they're more efficient (trivy, docker build & push)
+- use git hashes versions for all actions
 
 *** Learn more:
 - explain more on this:     
