@@ -1,10 +1,10 @@
-FROM python:3.14.3-alpine AS building_phase
+FROM python:3.13-alpine AS building_phase
 WORKDIR /python-build
 # Trivy security vulnerablity fix for pip; upgrading to pip 26.0
 RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --prefix=/app-packages fastapi uvicorn sqlalchemy psycopg2-binary
 
-FROM python:3.14.3-alpine AS polished_app
+FROM python:3.13-alpine AS polished_app
 WORKDIR /python-fast-api
 # Trivy security vulnerablity fix: updating outdated zlib
 RUN apk update && apk upgrade --no-cache
