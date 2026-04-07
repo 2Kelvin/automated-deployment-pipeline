@@ -1,5 +1,9 @@
 name: Code linting and Unit tests
-on: [push, pull_request]
+on:
+  push:
+    branches: [main] # code pushed to main branch only 
+  pull_request:
+    branches: [main] # PR merging to main branch only
 jobs:
   check_linting:
     runs-on: ubuntu-latest
@@ -7,10 +11,10 @@ jobs:
       - name: Download repo to runner
         uses: actions/checkout@v6.0.2
 
-      - name: Install Python 3.14.3
+      - name: Install Python 3.13
         uses: actions/setup-python@v6.2.0
         with:
-          python-version: "3.14.3"
+          python-version: "3.13"
 
       - name: Run ruff-action Python linter
         uses: astral-sh/ruff-action@v3.6.1
@@ -22,10 +26,10 @@ jobs:
       - name: Download repo to runner
         uses: actions/checkout@v6.0.2
 
-      - name: Install Python 3.14.3
+      - name: Install Python 3.13
         uses: actions/setup-python@v6.2.0
         with:
-          python-version: "3.14.3"
+          python-version: "3.13"
 
       - name: Install project dependencies
         run: pip install fastapi uvicorn sqlalchemy psycopg2-binary pytest httpx
