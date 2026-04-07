@@ -67,7 +67,7 @@ jobs:
           name: "trivy-scan-results"
           path: trivy-scan-results
 
-      - name: Push Docker image to Docker Hub # only if security scan passed
+      - name: Push Docker image to Docker Hub # only if Trivy security scan passed
         run: docker push rocketman02/python-fastapi-postgres:${{ github.sha }}
 
 # Todo: Deploy image to run in AWS
