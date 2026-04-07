@@ -10,5 +10,10 @@ http://localhost:8000/docs
 
 Minify:
 
-Postgres image from 649.38 mb -> 409.25mb
-python API image from 210.92 mb -> 155.9mb
+- Postgres image from 649.38 mb -> 409.25mb
+- python API image from 210.92 mb -> 155.9mb
+
+Security hardening:
+
+- Use docker secrets and Github secrets to harden security
+- non root user for python api container

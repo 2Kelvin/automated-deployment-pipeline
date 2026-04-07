@@ -41,7 +41,6 @@ Github Actions:
     SSH into VM using GitHub Actions and deploy image built
 
 *** Refactor:
-- safe password use (api, postgres, github)
 - trivy is posting critical and high vulnerabilities to security tab how?
 - pull request; workflow
 

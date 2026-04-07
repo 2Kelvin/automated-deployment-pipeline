@@ -11,9 +11,9 @@ def get_secret(secret_name):
         # Fallback for local dev if secrets aren't mounted
         return os.getenv(secret_name.upper())
 
-db_user = 'kelvin'
-db_pass = get_secret("db_passwd")
 db_name = "my_stock"
+db_user = "kev"
+db_pass = get_secret("db_passwd")
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{db_user}:{db_pass}@postgres/{db_name}"
 
