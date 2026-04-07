@@ -14,7 +14,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 def home():
-    return {"message": "Hi! Welcome to my stock items"}
+    return {"message": "Hi! Welcome to my stocked items fastAPI"}
 
 @app.get("/items/", response_model=list[schemas.ItemResponse])
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)):
