@@ -1,6 +1,8 @@
 FROM python:3.14.3-alpine
 WORKDIR /items-api
-# fix Trivy's pip security issue: upgrading to pip 26.0
+# fix Trivy security vulnerablity: zlib outdated
+# RUN apk update && apk upgrade --no-cache
+# fix Trivy security vulnerablity: pip outdated; upgrading to pip 26.0
 # RUN pip install --no-cache-dir --upgrade pip
 RUN pip install fastapi uvicorn sqlalchemy psycopg2-binary
 COPY *.py ./

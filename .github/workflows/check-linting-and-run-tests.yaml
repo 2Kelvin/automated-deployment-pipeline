@@ -48,7 +48,17 @@ jobs:
           image-ref: 'rocketman02/python-fastapi-postgres:${{ github.sha }}'
           ignore-unfixed: true
           vuln-type: 'os,library'
+          format: 'table'
+          output: 'trivy-scan-results'
           exit-code: '1'
+          severity: 'HIGH,CRITICAL'
+
+      - name: Upload Trivy scan results to GitHub
+        if: always() # print scan results even if trivy scan returns an error and fails
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        with:
+          name: 'trivy-scan-results'
+          path: ./trivy-scan-results
 
           # Todo
           # upload scan artifact: all severity
