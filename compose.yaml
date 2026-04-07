@@ -1,7 +1,7 @@
 services:
   # database
   postgres:
-    image: postgres:18.3
+    image: postgres:18.3-alpine
     expose:
       - 5432
     volumes:
@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: kev
       POSTGRES_DB: all_items
-      POSTGRES_PASSWORD: 1234 # how can i use the password in GitHub secrets here
+      POSTGRES_PASSWORD: 1234
     healthcheck: # check if postgres is ready
       test: ["CMD-SHELL", "pg_isready -U kev -d all_items"]
       interval: 5s

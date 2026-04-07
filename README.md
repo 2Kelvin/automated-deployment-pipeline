@@ -7,3 +7,8 @@ How to use the API, navigate to this link when you run the multicontainer app:
 ```bash
 http://localhost:8000/docs
 ```
+
+Minify:
+
+Postgres image from 649.38 mb -> 409.25mb
+python API image from 210.92 mb -> 147.31mb

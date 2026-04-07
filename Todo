@@ -42,7 +42,7 @@ Github Actions:
 
 *** Refactor:
 - safe password use (api, postgres, github)
-- multi-stage Dockerfile: optimize image sizes
+
 
 *** Learn more:
 - explain more on this:     
