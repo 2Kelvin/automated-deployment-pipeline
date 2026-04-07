@@ -43,7 +43,7 @@ jobs:
         run: docker build -t rocketman02/python-fastapi-postgres:${{ github.sha }} .
 
       - name: Trivy report (docker image)
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+        uses: aquasecurity/trivy-action@v0.35.0
         with:
           image-ref: "rocketman02/python-fastapi-postgres:${{ github.sha }}"
           format: "table"
@@ -62,7 +62,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub
         if: always() # print scan results even if trivy security scan/ any other step returns an error and fails
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f
+        uses: actions/upload-artifact@v7.0.0
         with:
           name: "trivy-scan-results"
           path: ./trivy-scan-results

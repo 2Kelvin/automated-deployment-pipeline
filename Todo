@@ -43,7 +43,6 @@ Github Actions:
 *** Refactor:
 - safe password use (api, postgres, github)
 - multi-stage Dockerfile: optimize image sizes
-- use git hashes versions for all actions
 
 *** Learn more:
 - explain more on this:     
