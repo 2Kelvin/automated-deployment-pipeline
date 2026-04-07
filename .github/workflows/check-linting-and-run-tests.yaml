@@ -1,7 +1,7 @@
 name: Code linting and Unit tests
 on:
   push:
-    branches: [maiin] # code pushed to main branch only 
+    branches: [main] # code pushed to main branch only 
   pull_request:
     branches: [main] # PR merging to main branch only
 jobs:
