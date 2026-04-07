@@ -42,16 +42,23 @@ jobs:
       - name: Build Docker image # docker is already preinstalled in runner
         run: docker build -t rocketman02/python-fastapi-postgres:${{ github.sha }} .
 
-      - name: Trivy docker image scan
-        uses: aquasecurity/trivy-action@v0.35.0
+      - name: Trivy report (docker image)
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+        with:
+          image-ref: 'rocketman02/python-fastapi-postgres:${{ github.sha }}'
+          format: 'table'
+          output: 'trivy-scan-results'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+
+      - name: Trivy security scan (docker image)
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
         with:
           image-ref: 'rocketman02/python-fastapi-postgres:${{ github.sha }}'
           ignore-unfixed: true
           vuln-type: 'os,library'
-          format: 'table'
-          output: 'trivy-scan-results'
-          exit-code: '1'
           severity: 'HIGH,CRITICAL'
+          exit-code: '1'
 
       - name: Upload Trivy scan results to GitHub
         if: always() # print scan results even if trivy scan returns an error and fails
@@ -60,11 +67,7 @@ jobs:
           name: 'trivy-scan-results'
           path: ./trivy-scan-results
 
-          # Todo
-          # upload scan artifact: all severity
-          # fail if severity: critical/high
-
-      - name: Push Docker image to Docker Hub
+      - name: Push Docker image to Docker Hub # only if security scan passed
         run: docker push rocketman02/python-fastapi-postgres:${{ github.sha }}
 
 # Todo: Deploy image to run in AWS
