@@ -32,7 +32,7 @@ Github Actions:
             --> scan docker images ---> tool: Trivy or Snyk
             --> push image to docker hub
 
-        -> on tests failure (below 80%) --> no code merge; fail workflow
+        -> on tests failure --> no code merge; fail workflow
 
     
     CD:
@@ -42,7 +42,7 @@ Github Actions:
 
 *** Refactor:
 - safe password use (api, postgres, github)
-
+- pull request; workflow
 
 *** Learn more:
 - explain more on this:     
