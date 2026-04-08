@@ -22,9 +22,6 @@ jobs:
   unit_tests:
     needs: check_linting # if linting checks don't pass, dont run tests
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
     steps:
       - name: Download repo to runner
         uses: actions/checkout@v6.0.2
@@ -43,6 +40,9 @@ jobs:
   docker_and_trivy:
     needs: unit_tests # if unit tests fail dont build docker image or scan it with Trivy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Download repo to runner
         uses: actions/checkout@v6.0.2
