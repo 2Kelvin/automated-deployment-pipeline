@@ -1,4 +1,4 @@
-name: Code linting and Unit tests
+name: Automated AWS Deployment Pipeline
 on:
   push:
     branches: [main] # code pushed to main branch only
