@@ -8,11 +8,11 @@ services:
       POSTGRES_DB: my_stock
       POSTGRES_USER: kev
       POSTGRES_PASSWORD_FILE: /run/secrets/db_passwd
-    healthcheck: # check if postgres is ready
-      test: ["CMD-SHELL", "pg_isready -U kev -d my_stock"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kev -d my_stock"] # check if postgres is fully setup & ready to accept connections
+      interval: 5s # retry db check every 5 seconds until its ready
+      timeout: 5s # if one db check fails, retry again in 5 seconds
+      retries: 5 # retry db check 5 times; if all 5 fail to connect deem db unhealthy
     volumes:
       - my_stock:/var/lib/postgresql
     secrets:
@@ -22,7 +22,7 @@ services:
   python_api:
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_healthy # wait for postgres db to be fully setup & ready to accept connections
     build: ./
     ports:
       - "8000:8000"

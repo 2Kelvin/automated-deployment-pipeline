@@ -42,7 +42,6 @@ Github Actions:
 
 *** Refactor:
 - trivy is posting critical and high vulnerabilities to security tab how?
-- pull request; workflow
 
 *** Learn more:
 - explain more on this:     

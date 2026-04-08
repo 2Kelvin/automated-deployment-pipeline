@@ -11,7 +11,7 @@ http://localhost:8000/docs
 Minify:
 
 - Postgres image from 649.38 mb -> 409.25mb
-- python API image from 210.92 mb -> 155.9mb
+- python API image from 210.92 mb -> 150.06mb
 
 Security hardening:
 
