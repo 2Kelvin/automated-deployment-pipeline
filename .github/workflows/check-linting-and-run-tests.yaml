@@ -39,7 +39,11 @@ jobs:
 
       - name: Run unit tests
         run: pytest
-
+  
+  docker_and_trivy:
+    needs: unit_tests # if unit tests fail dont build docker image or scan it with Trivy
+    runs-on: ubuntu-latest
+    steps:
       - name: Docker Hub login
         uses: docker/login-action@v4.1.0
         with:
