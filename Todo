@@ -38,4 +38,4 @@ Github Actions:
     CD:
 
     [Automated Deployment]
-    SSH into VM using GitHub Actions and deploy image built
+    Deploy on AWS
