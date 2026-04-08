@@ -8,7 +8,7 @@
 
 This project demonstrates a production-grade Continuous Integration (CI) pipeline for a containerized Python FastAPI application. It bridges the gap between "code that works" and "code that is ready for the enterprise" by implementing automated quality gates, multi-stage builds and advanced security hardening.
 
-**Note:** This is Part 1 of a 2-part series. Part 1 focuses on the CI/Build engine; Part 2 will cover the automated deployment to AWS.
+_Note: This is Part 1 of a 2-part series. Part 1 focuses on the CI/Build engine; Part 2 will cover the automated deployment to AWS._
 
 ## 🛠 Tech Stack
 
