@@ -17,3 +17,5 @@ Security hardening:
 
 - Use docker secrets and Github secrets to harden security
 - non root user for python api container
+
+Sacrificed a less minimal image to fix a security vulnerability with pip, in the multistage python api dockerfile
