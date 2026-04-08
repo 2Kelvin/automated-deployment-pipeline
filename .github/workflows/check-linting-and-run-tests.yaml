@@ -1,7 +1,7 @@
 name: Code linting and Unit tests
 on:
   push:
-    branches: [main] # code pushed to main branch only 
+    branches: [main] # code pushed to main branch only
   pull_request:
     branches: [main] # PR merging to main branch only
 jobs:
@@ -50,10 +50,15 @@ jobs:
         uses: aquasecurity/trivy-action@v0.35.0
         with:
           image-ref: "rocketman02/python-fastapi-postgres:${{ github.sha }}"
-          format: "table"
-          output: "trivy-scan-results"
+          format: "sarif"
+          output: "trivy-results.sarif"
           ignore-unfixed: true
           vuln-type: "os,library"
+
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: "trivy-results.sarif"
 
       - name: Trivy security scan (docker image)
         uses: aquasecurity/trivy-action@v0.35.0
@@ -63,13 +68,6 @@ jobs:
           vuln-type: "os,library"
           severity: "HIGH,CRITICAL"
           exit-code: "1"
-
-      - name: Upload Trivy scan results to GitHub
-        if: always() # print scan results even if trivy security scan/ any other step returns an error and fails
-        uses: actions/upload-artifact@v7.0.0
-        with:
-          name: "trivy-scan-results"
-          path: trivy-scan-results
 
       - name: Push Docker image to Docker Hub # only if Trivy security scan passed
         run: docker push rocketman02/python-fastapi-postgres:${{ github.sha }}

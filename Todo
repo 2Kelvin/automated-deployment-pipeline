@@ -39,14 +39,3 @@ Github Actions:
 
     [Automated Deployment]
     SSH into VM using GitHub Actions and deploy image built
-
-*** Refactor:
-- trivy is posting critical and high vulnerabilities to security tab how?
-
-*** Learn more:
-- explain more on this:     
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kev -d all_items"] # check if postgres is ready
-      interval: 5s
-      timeout: 5s
-      retries: 5
