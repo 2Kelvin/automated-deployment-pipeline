@@ -5,7 +5,7 @@ RUN pip install --no-cache-dir --prefix=/app-packages fastapi uvicorn sqlalchemy
 FROM python:3.13-alpine AS polished_app
 WORKDIR /python-fast-api
 # Trivy security vulnerablity fix: updating outdated zlib
-RUN apk update && apk upgrade --no-cache
+# RUN apk update && apk upgrade --no-cache
 # Trivy security vulnerablity fix for pip; upgrading to pip 26.0
 RUN pip install --no-cache-dir --upgrade pip
 COPY --from=building_phase /app-packages /usr/local
