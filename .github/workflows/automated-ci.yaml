@@ -1,14 +1,12 @@
-name: Automated AWS Deployment Pipeline
+name: CI Pipeline
 on:
-  push:
-    branches: [main] # code pushed to main branch only
   pull_request:
-    branches: [main] # PR merging to main branch only
+    branches: [ main ]
 jobs:
   check_linting:
     runs-on: ubuntu-latest
     steps:
-      - name: Download repo to runner
+      - name: Clone repo to runner
         uses: actions/checkout@v6.0.2
 
       - name: Install Python 3.13
@@ -23,7 +21,7 @@ jobs:
     needs: check_linting # if linting checks don't pass, dont run tests
     runs-on: ubuntu-latest
     steps:
-      - name: Download repo to runner
+      - name: Clone repo to runner
         uses: actions/checkout@v6.0.2
 
       - name: Install Python 3.13
@@ -44,7 +42,7 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - name: Download repo to runner
+      - name: Clone repo to runner
         uses: actions/checkout@v6.0.2
 
       - name: Docker Hub login
@@ -81,5 +79,3 @@ jobs:
 
       - name: Push Docker image to Docker Hub # only if Trivy security scan passed
         run: docker push rocketman02/python-fastapi-postgres:${{ github.sha }}
-
-# Todo: Deploy image to run in AWS

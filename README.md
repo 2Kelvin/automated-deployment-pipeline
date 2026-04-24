@@ -61,7 +61,7 @@ All fixable vulnerabilities identified by Trivy are documented in the GitHub Sec
 To spin up the full environment (API + Database) locally:
 
 ```bash
-docker-compose up --build
+docker compose up -d --build
 ```
 
 Ensure you have:

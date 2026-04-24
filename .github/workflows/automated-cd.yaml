@@ -1,0 +1,46 @@
+name: CD Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+  run_terraform_iac:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo to runner
+        uses: actions/checkout@v6.0.2
+
+      - name: Download Terraform CLI in runner
+        uses: hashicorp/setup-terraform@v4.0.0
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform init
+
+      - name: Terraform apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform apply -auto-approve
+
+      - name: EC2 SSH Login
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: 10.10.10.5 # replace with terraform output IP
+          username: ubuntu
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          port: 22
+          script: | # research on this
+            docker pull rocketman02/python-fastapi-postgres:${{ github.sha }}
+            docker compose up -d --build
+
+# Todo: Deploy image to run in AWS => create a 'automated-cd.yaml' workflow
+# 1. IAC: run Terraform action to build ec2 instance:
+#  use 'user_data'; on first ec2 boot install docker
+# upload ec2 ssh login e.g. ssh -i .pem user@ip_address
+# 2. ssh into ec2:
+# docker pull image
+# docker compose up --build
