@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 jobs:
-  run_terraform_iac:
+  create_ec2_and_run_docker_multicontainer:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo to runner
@@ -14,28 +14,30 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Terraform init
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: terraform init
 
       - name: Terraform apply
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -auto-approve
+        id: tf_apply_step
+        run: |
+          terraform apply -auto-approve
+          echo "instance_ip=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
 
       - name: EC2 SSH Login
         uses: appleboy/ssh-action@v1.2.5
         with:
-          host: 10.10.10.5 # replace with terraform output IP
+          host: ${{ steps.tf_apply_step.outputs.instance_ip }}
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
-          script: | # research on this
-            docker pull rocketman02/python-fastapi-postgres:${{ github.sha }}
-            docker compose up -d --build
+          script_path: ./run-docker-app.sh
 
 # Todo: Deploy image to run in AWS => create a 'automated-cd.yaml' workflow
 # 1. IAC: run Terraform action to build ec2 instance:

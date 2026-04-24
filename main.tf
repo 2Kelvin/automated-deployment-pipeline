@@ -25,6 +25,15 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow_api" {
+  description       = "Enable api port (port 8000)"
+  security_group_id = aws_security_group.my_cicd_securitygroup.id
+  ip_protocol       = "tcp"
+  from_port         = 8000
+  to_port           = 8000
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
 
 resource "aws_vpc_security_group_egress_rule" "allow_all_outbound" {
   description       = "Allow all outbound traffic from the EC2 instance"
@@ -37,7 +46,7 @@ resource "aws_instance" "my_terraform_ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2_type
   key_name      = var.ec2_ssh_key
-  user_data     = file("install_docker.sh")
+  user_data     = file("install-docker.sh")
   tags = {
     Name = var.ec2_name
   }
