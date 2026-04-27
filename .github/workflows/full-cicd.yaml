@@ -112,7 +112,7 @@ jobs:
 
       - name: Wait 1 minute 50 seconds for EC2 to be ready for SSHing
         run: |
-          echo "Waiting for EC2 to fully start up inorder to accept SSH connections..."
+          echo "Waiting for EC2 to fully start up so to accept SSH connections..."
           sleep 110
 
       - name: SSH into EC2 and pull & run docker app
