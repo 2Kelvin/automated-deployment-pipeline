@@ -110,10 +110,10 @@ jobs:
           terraform apply -auto-approve
           echo "instance_ip=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
 
-      - name: Wait 3 minutes for EC2 to be ready for SSHing
+      - name: Wait 1 minute 50 seconds for EC2 to be ready for SSHing
         run: |
-          echo "Waiting for EC2 to fully start up inorder to accept SSH connections..."
-          sleep 180
+          echo "Waiting for EC2 to fully start up so to accept SSH connections..."
+          sleep 110
 
       - name: SSH into EC2 and pull & run docker app
         uses: appleboy/ssh-action@v1.2.5
@@ -124,5 +124,5 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
-          envs: MY_POSTGRES_DB_PASSWORD,MY_DOCKER_IMAGE # env variables to copy from runner's env to ec2 env
+          envs: MY_POSTGRES_DB_PASSWORD,MY_DOCKER_IMAGE # env variables to copy from runner's env to ec2's env
           script_path: ./run-docker-app.sh
