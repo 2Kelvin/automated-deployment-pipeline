@@ -28,7 +28,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    image: $MY_DOCKER_IMAGE
+    image: "$MY_DOCKER_IMAGE"
     ports:
       - "8000:8000"
     secrets:

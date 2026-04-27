@@ -107,8 +107,22 @@ In the workflow you access the environment variable's value using its context li
 
 ## Errors faced and how I fixed them
 
+1. **Error**:
+
 ```bash
-2026/04/27 07:28:23 ssh.ParsePrivateKey: ssh: no key found
-2026/04/27 07:28:24 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain
+  ssh.ParsePrivateKey: ssh: no key found
+  ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain
+  Error: Process completed with exit code 1.
+```
+
+**Fix**: I had an extra `%` at the end of the key which caused the error. So, I removed it and also had to include a newline at the end of the private key when pasting it into `Github secrets` for it to work.
+
+2. **Error**:
+
+```bash
+validating /home/ubuntu/app/compose.yaml: services.python_api.image must be a string
+Process exited with status 1
 Error: Process completed with exit code 1.
 ```
+
+**Fix**: In **SSH action step**, I added an `envs` attribute that copies the given runner's environment variables into the EC2's environment; into the EC2 environment I copied postgres database password `MY_POSTGRES_DB_PASSWORD` and the URL to the docker image `MY_DOCKER_IMAGE`, this is what fixed the issue together with adding double quotes around `$MY_DOCKER_IMAGE` in `run-docker-app.sh` script.

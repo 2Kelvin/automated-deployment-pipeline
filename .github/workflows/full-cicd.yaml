@@ -124,4 +124,5 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
+          envs: MY_POSTGRES_DB_PASSWORD,MY_DOCKER_IMAGE # env variables to copy from runner's env to ec2 env
           script_path: ./run-docker-app.sh
