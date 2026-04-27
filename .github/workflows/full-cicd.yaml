@@ -127,6 +127,5 @@ jobs:
           envs: MY_POSTGRES_DB_PASSWORD,MY_DOCKER_IMAGE # env variables to copy from runner's env to ec2's env
           script_path: ./run-docker-app.sh
 
-      # destroy all aws resources
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
