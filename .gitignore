@@ -1,1 +1,5 @@
 secrets/
+.terraform/
+*.tfstate
+*.tfstate.*
+automated-cd.yaml

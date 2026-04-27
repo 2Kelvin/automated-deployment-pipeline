@@ -61,7 +61,7 @@ All fixable vulnerabilities identified by Trivy are documented in the GitHub Sec
 To spin up the full environment (API + Database) locally:
 
 ```bash
-docker-compose up --build
+docker compose up -d --build
 ```
 
 Ensure you have:
@@ -80,3 +80,49 @@ docker compose down
 ```
 
 _Note: This repository covers Part 1 (CI & Registry). Part 2 will implement the Automated AWS Deployment._
+
+---
+
+## Concepts that really clicked from this project
+
+When you assign an `env` variable in a github actions workflow in any scope/level, that same env variable can be accessed directly in the runner's shell for additional use like displaying or using its value.
+
+```yaml
+name: Example
+on: push
+env:
+  FRUIT_ONE: avocado
+jobs:
+  runs-on: ubuntu-latest
+  env:
+    FRUIT_TWO: banana
+  steps:
+    - name: Which fruits do I have?
+    env:
+      FRUIT_THREE: pineapple
+    run: echo "I have an $FRUIT_ONE, a $FRUIT_TWO and a $FRUIT_THREE.
+```
+
+In the workflow you access the environment variable's value using its context like so: `env.FRUIT_TWO` while in the runner's shell you access it like so: `$FRUIT_TWO`; just like in a normal shell.
+
+## Errors faced and how I fixed them
+
+1. **Error**:
+
+```bash
+  ssh.ParsePrivateKey: ssh: no key found
+  ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain
+  Error: Process completed with exit code 1.
+```
+
+**Fix**: I had an extra `%` at the end of the key which caused the error. So, I removed it and also had to include a newline at the end of the private key when pasting it into `Github secrets` for it to work.
+
+2. **Error**:
+
+```bash
+validating /home/ubuntu/app/compose.yaml: services.python_api.image must be a string
+Process exited with status 1
+Error: Process completed with exit code 1.
+```
+
+**Fix**: In **SSH action step**, I added an `envs` attribute that copies the given runner's environment variables into the EC2's environment; into the EC2 environment I copied postgres database password `MY_POSTGRES_DB_PASSWORD` and the URL to the docker image `MY_DOCKER_IMAGE`, this is what fixed the issue together with adding double quotes around `$MY_DOCKER_IMAGE` in `run-docker-app.sh` script.
