@@ -128,4 +128,4 @@ jobs:
           script_path: ./run-docker-app.sh
 
       - name: Terraform destroy
-        run: terraform -auto-approve
+        run: terraform destroy -auto-approve
