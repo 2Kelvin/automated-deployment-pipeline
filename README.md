@@ -104,3 +104,11 @@ jobs:
 ```
 
 In the workflow you access the environment variable's value using its context like so: `env.FRUIT_TWO` while in the runner's shell you access it like so: `$FRUIT_TWO`; just like in a normal shell.
+
+## Errors faced and how I fixed them
+
+```bash
+2026/04/27 07:28:23 ssh.ParsePrivateKey: ssh: no key found
+2026/04/27 07:28:24 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none], no supported methods remain
+Error: Process completed with exit code 1.
+```
