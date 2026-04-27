@@ -1,6 +1,6 @@
 # Cloud-Native Microservice Pipeline (Part 1: CI & Hardening)
 
-![CI/CD Pipeline](https://img.shields.io/github/actions/workflow/status/2Kelvin/automated-deployment-pipeline/automated-ci.yaml?label=CI/CD%20Pipeline&style=for-the-badge)
+![CI/CD Pipeline](https://img.shields.io/github/actions/workflow/status/2Kelvin/automated-deployment-pipeline/full-cicd.yaml?label=CI/CD%20Pipeline&style=for-the-badge)
 ![Trivy Scan](https://img.shields.io/badge/Security-Trivy_Checked-blue?style=for-the-badge)
 ![Docker Size](https://img.shields.io/badge/Docker_Image_Size-173MB-green?style=for-the-badge)
 
