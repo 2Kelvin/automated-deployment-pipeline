@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkdir ~/app
+mkdir -p ~/app
 cd ~/app
-mkdir secrets
+mkdir -p secrets
 echo "$MY_POSTGRES_DB_PASSWORD" > secrets/password.txt
 cat <<EOF > compose.yaml
 services:
@@ -42,4 +42,6 @@ volumes:
   my_stock:
 EOF
 
+docker image prune -af
+docker compose down
 docker compose up -d
