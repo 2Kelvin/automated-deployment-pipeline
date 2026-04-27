@@ -2,8 +2,8 @@ terraform {
   cloud {
     organization = "my_iac_projects"
     workspaces {
-      project = "Automated CICD Pipeline"
-      name    = "automated-cicd"
+      project = "CICD Pipelines"
+      name    = "full-cicd"
     }
   }
 
@@ -16,3 +16,4 @@ terraform {
 
   required_version = ">=1.14.9"
 }
+ 
