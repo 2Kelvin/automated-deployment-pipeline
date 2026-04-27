@@ -110,6 +110,11 @@ jobs:
           terraform apply -auto-approve
           echo "instance_ip=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
 
+      - name: Wait 5mins for EC2 to be ready before SSHing
+        run: |
+          echo "Waiting for EC2 to fully start up"
+          sleep 300
+
       - name: EC2 SSH Login
         uses: appleboy/ssh-action@v1.2.5
         env:
