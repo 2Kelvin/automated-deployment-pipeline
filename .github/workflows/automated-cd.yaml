@@ -45,4 +45,4 @@ jobs:
 # upload ec2 ssh login e.g. ssh -i .pem user@ip_address
 # 2. ssh into ec2:
 # docker pull image
-# docker compose up --build
+# docker compose up -d
