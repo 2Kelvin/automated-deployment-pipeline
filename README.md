@@ -80,3 +80,27 @@ docker compose down
 ```
 
 _Note: This repository covers Part 1 (CI & Registry). Part 2 will implement the Automated AWS Deployment._
+
+---
+
+## Concepts that really clicked from this project
+
+When you assign an `env` variable in a github actions workflow in any scope/level, that same env variable can be accessed directly in the runner's shell for additional use like displaying or using its value.
+
+```yaml
+name: Example
+on: push
+env:
+  FRUIT_ONE: avocado
+jobs:
+  runs-on: ubuntu-latest
+  env:
+    FRUIT_TWO: banana
+  steps:
+    - name: Which fruits do I have?
+    env:
+      FRUIT_THREE: pineapple
+    run: echo "I have an $FRUIT_ONE, a $FRUIT_TWO and a $FRUIT_THREE.
+```
+
+In the workflow you access the environment variable's value using its context like so: `env.FRUIT_TWO` while in the runner's shell you access it like so: `$FRUIT_TWO`; just like in a normal shell.

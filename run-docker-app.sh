@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# make app directory
-mkdir -p ~/app
+mkdir ~/app
 cd ~/app
+mkdir secrets
+echo "$MY_POSTGRES_DB_PASSWORD" > secrets/password.txt
 cat <<EOF > compose.yaml
 services:
   postgres:
@@ -27,7 +28,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    image: rocketman02/python-fastapi-postgres:latest
+    image: $MY_DOCKER_IMAGE
     ports:
       - "8000:8000"
     secrets:
@@ -41,7 +42,4 @@ volumes:
   my_stock:
 EOF
 
-
-Todo
-- ssh into vm and try running my multicontainer docker image app
-- fix githb.sha main/pull rewquest issue
+docker compose up -d

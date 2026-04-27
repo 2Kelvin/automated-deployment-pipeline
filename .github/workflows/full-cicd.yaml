@@ -2,6 +2,8 @@ name: CICD Pipeline
 on:
   pull_request:
     branches: [ main ]
+env:
+  MY_DOCKER_IMAGE: rocketman02/python-fastapi-postgres:${{ github.sha }}
 jobs:
   check_linting:
     runs-on: ubuntu-latest
@@ -52,12 +54,13 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build Docker image # docker is already preinstalled in runner
-        run: docker build -t rocketman02/python-fastapi-postgres:${{ github.sha }} .
+        run: docker build -t rocketman02/python-fastapi-postgres:${{ env.MY_DOCKER_IMAGE
+          }} .
 
       - name: Trivy report (docker image)
         uses: aquasecurity/trivy-action@v0.35.0
         with:
-          image-ref: "rocketman02/python-fastapi-postgres:${{ github.sha }}"
+          image-ref: "rocketman02/python-fastapi-postgres:${{ env.MY_DOCKER_IMAGE }}"
           format: "sarif"
           output: "trivy-results.sarif"
           ignore-unfixed: true
@@ -71,14 +74,14 @@ jobs:
       - name: Trivy security scan (docker image)
         uses: aquasecurity/trivy-action@v0.35.0
         with:
-          image-ref: "rocketman02/python-fastapi-postgres:${{ github.sha }}"
+          image-ref: "rocketman02/python-fastapi-postgres:${{ env.MY_DOCKER_IMAGE }}"
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "HIGH,CRITICAL"
           exit-code: "1"
 
       - name: Push Docker image to Docker Hub # only if Trivy security scan passed
-        run: docker push rocketman02/python-fastapi-postgres:${{ github.sha }}
+        run: docker push rocketman02/python-fastapi-postgres:${{ env.MY_DOCKER_IMAGE }}
 
   create_ec2_and_run_docker_app:
     needs: docker_and_trivy
@@ -110,9 +113,12 @@ jobs:
 
       - name: EC2 SSH Login
         uses: appleboy/ssh-action@v1.2.5
+        env:
+          MY_POSTGRES_DB_PASSWORD: ${{ secrets.POSTGRES_DB_PASSWORD }}
         with:
           host: ${{ steps.tf_apply_step.outputs.instance_ip }}
           username: ubuntu
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
-          script_path: ./run-docker-app.sh
+          script_path: |
+            ./run-docker-app.sh

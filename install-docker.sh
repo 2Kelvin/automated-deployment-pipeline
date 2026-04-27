@@ -17,7 +17,6 @@ EOF
 sudo apt update -y
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-sudo systemctl start docker
-sudo systemctl enable docker
+sudo systemctl enable --now docker
 
 sudo usermod -aG docker ubuntu
