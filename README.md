@@ -1,6 +1,6 @@
-# Cloud-Native Microservice Pipeline
+# Hardened CI/CD Pipeline: Python FastAPI to AWS EC2 via Terraform & Docker
 
-# Part 1: CI & Hardening
+# Part 1: Continuous Integration (CI) & Hardening
 
 ![CI/CD Pipeline](https://img.shields.io/github/actions/workflow/status/2Kelvin/automated-deployment-pipeline/full-cicd.yaml?label=CI/CD%20Pipeline&style=for-the-badge)
 ![Trivy Scan](https://img.shields.io/badge/Security-Trivy_Checked-blue?style=for-the-badge)
@@ -8,9 +8,7 @@
 
 ## 📌 Project Overview
 
-This project demonstrates a production-grade Continuous Integration (CI) pipeline for a containerized Python FastAPI application. It bridges the gap between "code that works" and "code that is ready for the enterprise" by implementing automated quality gates, multi-stage builds and advanced security hardening.
-
-_Note: This is Part 1 of a 2-part series. Part 1 focuses on the CI/Build engine; Part 2 will cover the automated CD/deployment to AWS._
+This part 1 demonstrates a production-grade Continuous Integration (CI) pipeline for a containerized Python FastAPI application. It bridges the gap between "code that works" and "code that is ready for the enterprise" by implementing automated quality gates, multi-stage builds and advanced security hardening.
 
 ## 🛠 Tech Stack
 
@@ -21,11 +19,11 @@ _Note: This is Part 1 of a 2-part series. Part 1 focuses on the CI/Build engine;
 - **Security:** Trivy (Vulnerability Scanning) & Ruff (Linting)
 - **Quality:** Pytest & Multi-stage builds
 
-## 🚀 Key Engineering Features
+## 🚀 Key CI Engineering Features
 
 ### 1. Automated Quality Gates
 
-Every push or Pull Request triggers a sequential safety net:
+Every `Pull Request` triggers a sequential safety net:
 
 - **Linting:** Uses `Ruff` to enforce PEP 8 standards.
 - **Unit Testing:** Automated testing via `Pytest` ensures logic integrity before any build starts.
@@ -100,7 +98,7 @@ Part 2 extends the pipeline from a static container build to a fully automated C
 - **Orchestration**: Docker Compose
 - **Configuration Management**: Bash Scripting(User Data)
 
-## 🚀 Advanced CD Engineering Features
+## 🚀 Key CD Engineering Features
 
 ### 1. Infrastructure as Code (IaC) with Terraform
 
@@ -110,7 +108,7 @@ Instead of manual console configuration, the environment is defined in code:
 - **Dynamic AMI Lookup**: Automatically fetches the latest Ubuntu 24.04 image to ensure the base OS is always up-to-date with security patches.
 - **State Management**: Integrated with Terraform Cloud to provide a single source of truth and prevent state lock issues.
 
-### 2. Provisioning
+### 2. Configuration & Provisioning
 
 - **User Data Injection**: The `install-docker.sh` script is injected at boot, ensuring the **instance is "Docker-ready"** without manual intervention.
 - **Security Group Hardening**: Strict ingress rules only allow traffic on Port 22 (SSH) for management and Port 8000 for API access.
@@ -127,15 +125,15 @@ The pipeline uses the `appleboy/ssh-action` to bridge the gap between the GitHub
 The deployment script generates a local `compose.yaml` on the fly for:
 
 - **Zero-Downtime Strategy**: Implements `docker compose down` and `docker compose up -d` to refresh the stack.
-- **Secret Management**: Utilizes Docker Secrets to handle the PostgreSQL password, ensuring sensitive data never touches environment variables in plain text.
+- **Secret Management**: Utilizes GitHub and Docker Secrets to handle the PostgreSQL password, ensuring sensitive data never touches environment variables in plain text.
 - **Health Checks**: The API service waits for the Postgres container to be `service_healthy` before starting, preventing "Database not found" errors during boot.
 
 ## 📈 Deployment Workflow
 
 1. **Terraform Init/Apply**: GitHub Actions initializes Terraform and applies the plan.
 2. **IP Extraction**: The public IP of the newly created EC2 is captured as a GitHub Output.
-3. **Wait Period**: A 110 second buffer ensures the instance has started up, finished its `User Data` scripts and is ready for SSH.
-4. **Remote Deploy**: The runner SSHs into the instance, creates the necessary directory structure, and triggers `docker compose`.
+3. **Wait Period**: A 110 second buffer ensures the instance has started up, finished its `User Data` script and is ready for SSH.
+4. **Remote Deploy**: The runner SSHs into the instance, creates the necessary directory structure and triggers `docker compose`.
 
 ## 🔑 Required GitHub Secrets
 
@@ -155,9 +153,8 @@ Once the pipeline completes, you can find the Public IP in the AWS Console or in
 
 - **API Endpoint**: `http://<EC2_PUBLIC_IP>:8000/`
 - **Documentation**: `http://<EC2_PUBLIC_IP>:8000/docs`
-  **Warning**: Running this pipeline will incur AWS costs associated with EC2. Ensure you run `terraform destroy` locally or via a manual workflow if you wish to tear down the infrastructure.
 
----
+**Warning**: Running this pipeline will incur AWS costs associated with EC2. Ensure you run `terraform destroy` afterwards if you wish to tear down the infrastructure.
 
 ## 💡 Concepts that really clicked for me from this project
 
@@ -180,7 +177,7 @@ jobs:
     run: echo "I have an $FRUIT_ONE, a $FRUIT_TWO and a $FRUIT_THREE.
 ```
 
-In the workflow you access the environment variable's value using its context like so: `env.FRUIT_TWO` while in the runner's shell you access it like so: `$FRUIT_TWO`; just like in a normal Linux shell.
+In the workflow you access the environment variable's value using its context like so: `${{ env.FRUIT_TWO }}` while in the runner's shell you access it like so: `$FRUIT_TWO`; just like in a normal Linux shell.
 
 ## 🔧 Errors faced and how I fixed them
 
@@ -192,7 +189,7 @@ In the workflow you access the environment variable's value using its context li
      Error: Process completed with exit code 1.
    ```
 
-   **Fix**: I had an extra `%` at the end of the key which caused the error. So, I removed it and also had to include a newline at the end of the private key when pasting it into `Github secrets` for it to work.
+   **Fix**: I had an extra `%` at the end of my private key which caused the error. So, I removed it and also had to include a newline at the end of the private key when pasting it into `Github secrets` for it to work.
 
 2. **Error**:
 
@@ -202,6 +199,6 @@ In the workflow you access the environment variable's value using its context li
    Error: Process completed with exit code 1.
    ```
 
-   **Fix**: In **SSH action step**, I added an `envs` attribute that copies the specified runner's environment variables into the EC2's environment; into the EC2 environment, I copied postgres database password `MY_POSTGRES_DB_PASSWORD` and the URL to the docker image `MY_DOCKER_IMAGE`. This together with adding double quotes around `$MY_DOCKER_IMAGE` in `run-docker-app.sh` script fixed the issue.
+   **Fix**: In the **SSH action step**, I added an `envs` attribute that copies the specified runner's environment variables into the EC2's environment; into the EC2 environment, I copied postgres database password (`MY_POSTGRES_DB_PASSWORD`) and the URL to the docker image (`MY_DOCKER_IMAGE`). This together with adding double quotes around `$MY_DOCKER_IMAGE` in `run-docker-app.sh` script fixed the issue.
 
 3. Due to running multiple branches with numerous git commits and history, I got some git merge errors trying to sync the branches. So, I learnt more about `git merge` and when to use `git rebase` too for a clean linear git history.
