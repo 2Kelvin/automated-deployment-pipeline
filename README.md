@@ -6,7 +6,7 @@
 ![Trivy Scan](https://img.shields.io/badge/Security-Trivy_Checked-blue?style=for-the-badge)
 ![Docker Size](https://img.shields.io/badge/Docker_Image_Size-173MB-green?style=for-the-badge)
 
-## 📌 Project Overview
+## 📌 Continuous Integration (CI) Overview
 
 This part 1 demonstrates a production-grade Continuous Integration (CI) pipeline for a containerized Python FastAPI application. It bridges the gap between "code that works" and "code that is ready for the enterprise" by implementing automated quality gates, multi-stage builds and advanced security hardening.
 
@@ -86,7 +86,7 @@ docker compose down
 ![Ubuntu](https://img.shields.io/badge/Ubuntu_24.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![Deployment](https://img.shields.io/badge/Deployment-Automated_EC2-orange?style=for-the-badge)
 
-## 📌 Deployment Overview
+## 📌 Continuous Deployment (CD) Overview
 
 Part 2 extends the pipeline from a static container build to a fully automated Continuous Deployment engine. Using Infrastructure as Code (IaC), the pipeline dynamically provisions AWS resources and orchestrates the deployment of the hardened FastAPI microservice.
 
